@@ -1,0 +1,150 @@
+2024-12-18 12:49:28,581 - INFO - #-----------------BOF.XGBoots-----------------#
+2024-12-18 12:49:28,581 - INFO - #######################################################
+2024-12-18 12:49:28,582 - INFO - # AIML- INCAF-1 Módulo 3: Diseñar e implementar modelos
+2024-12-18 12:49:28,582 - INFO - ## Actividad 1: Construcción de un modelo de Machine Learning utilizando un algoritmo avanzado.
+2024-12-18 12:49:28,582 - INFO - ### Elaborado por: Gabriel Guzmán
+
+2024-12-18 12:49:28,582 - INFO - Se creado un programa Python el cuál se ejecuta de forma automática las tareas de preparación de datos.
+2024-12-18 12:49:28,582 - INFO - Se añade el uso de XGBoost para analizar la posibilidad de nuestra variable target si aumentará saldo o no
+2024-12-18 12:49:28,582 - INFO - 
+
+2024-12-18 12:49:28,582 - INFO - Iniciando Proceso Automatizado...
+2024-12-18 12:49:28,582 - INFO - #Generando semilla
+
+2024-12-18 12:49:28,582 - INFO - #Creando datos de ejemplo
+
+2024-12-18 12:49:28,586 - INFO - #Mostrando datos originales:
+
+2024-12-18 12:49:28,586 - INFO -           fecha     CodCliente       Importe    Comisión          Producto  \
+0    2023-12-08  100248.357077  48446.096221         NaN  Cuenta Corriente   
+1    2023-12-09   99930.867849  48969.807495         NaN     Cuenta Ahorro   
+2    2023-12-10  100323.844269  49193.197233         NaN  Cuenta Corriente   
+3    2023-12-11  100761.514928  50343.843829         NaN  Cuenta Corriente   
+4    2023-12-12   99882.923313  49678.276562         NaN               DPF   
+...         ...            ...           ...         ...               ...   
+2998 2032-02-22  100167.088209  49633.975211  391.251923     Cuenta Ahorro   
+2999 2032-02-23   99922.370476  48814.859647  614.177265               DPF   
+0    2023-12-08  100248.357077  48446.096221         NaN  Cuenta Corriente   
+1    2023-12-09   99930.867849  48969.807495         NaN     Cuenta Ahorro   
+2    2023-12-10  100323.844269  49193.197233         NaN  Cuenta Corriente   
+
+                  Region AumentaSaldo  
+0       San Salvador Sur           No  
+1     San Salvador Norte           No  
+2     San Salvador Oeste           Si  
+3      San Salvador Este           No  
+4      San Salvador Este           No  
+...                  ...          ...  
+2998   San Salvador Este           No  
+2999  San Salvador Oeste           No  
+0       San Salvador Sur           No  
+1     San Salvador Norte           No  
+2     San Salvador Oeste           Si  
+
+[3003 rows x 7 columns]
+2024-12-18 12:49:28,591 - INFO - 
+Información de Columnas:
+
+2024-12-18 12:49:28,596 - INFO - None
+2024-12-18 12:49:28,596 - INFO - # Creamos una copia para no modificar los datos originales
+2024-12-18 12:49:28,596 - INFO - # 1. Manejo de valores faltantes
+2024-12-18 12:49:28,596 - INFO - # Rellenamos valores faltantes en columnas numéricas con la mediana
+2024-12-18 12:49:28,598 - DEBUG - - Valores faltantes en 'Comisión' rellenados con la mediana: 491.791634809789
+2024-12-18 12:49:28,598 - INFO - # 2. Eliminación de duplicados
+2024-12-18 12:49:28,601 - DEBUG - - Se eliminaron 3 registros duplicados
+2024-12-18 12:49:28,601 - INFO - # 3. Estandarización de texto
+2024-12-18 12:49:28,603 - DEBUG - - Columna 'Producto' estandarizada a minúsculas y sin espacios externos
+2024-12-18 12:49:28,604 - DEBUG - - Columna 'Region' estandarizada a minúsculas y sin espacios externos
+2024-12-18 12:49:28,605 - DEBUG - - Columna 'AumentaSaldo' estandarizada a minúsculas y sin espacios externos
+2024-12-18 12:49:28,605 - INFO - # 4. Manejo de valores atípicos (outliers)
+2024-12-18 12:49:28,608 - DEBUG - - Se encontraron y trataron 29 valores atípicos en 'CodCliente'
+2024-12-18 12:49:28,611 - DEBUG - - Se encontraron y trataron 26 valores atípicos en 'Importe'
+2024-12-18 12:49:28,613 - DEBUG - - Se encontraron y trataron 19 valores atípicos en 'Comisión'
+2024-12-18 12:49:28,613 - INFO - # 5. Creación de nuevas características
+2024-12-18 12:49:28,614 - DEBUG - - Creada nueva columna 'margen_beneficio'
+2024-12-18 12:49:28,614 - INFO - # 6. Normalización de datos numéricos
+2024-12-18 12:49:28,615 - DEBUG - - Columna 'CodCliente' normalizada entre 0 y 1
+2024-12-18 12:49:28,615 - DEBUG - - Columna 'Importe' normalizada entre 0 y 1
+2024-12-18 12:49:28,616 - DEBUG - - Columna 'Comisión' normalizada entre 0 y 1
+2024-12-18 12:49:28,616 - INFO - # 7. Conversión de tipos de datos
+2024-12-18 12:49:28,616 - INFO - # Preparando el formato de fecha
+2024-12-18 12:49:28,616 - INFO - # Convertir columnas de fecha
+2024-12-18 12:49:28,618 - DEBUG - - La Columna 'Producto' no es de tipo fecha
+2024-12-18 12:49:28,618 - DEBUG - - La Columna 'Region' no es de tipo fecha
+2024-12-18 12:49:28,619 - DEBUG - - La Columna 'AumentaSaldo' no es de tipo fecha
+2024-12-18 12:49:28,619 - INFO - # 8. Seleccionar columnas necesarias
+
+2024-12-18 12:49:28,620 - INFO - # 9. Separar las características (X) y la variable objetivo (y)
+2024-12-18 12:49:28,620 - INFO - Distribución de la variable objetivo (AumentaSaldo):
+2024-12-18 12:49:28,620 - INFO - AumentaSaldo
+no    1508
+si    1492
+Name: count, dtype: int64
+2024-12-18 12:49:28,621 - DEBUG - ['no' 'si']
+2024-12-18 12:49:28,623 - INFO - AumentaSaldo
+0    1508
+1    1492
+Name: count, dtype: int64
+2024-12-18 12:49:28,623 - INFO - # 10. Aplicar One-Hot Encoding a las columnas categóricas
+
+2024-12-18 12:49:28,628 - INFO - # 11. Combinar columnas codificadas con las numéricas
+
+2024-12-18 12:49:28,629 - INFO - # 12. Dividir datos en entrenamiento y prueba
+
+2024-12-18 12:49:28,631 - INFO - # 13. Aplicar SMOTE para balancear clases
+
+2024-12-18 12:49:28,637 - INFO - # 14. Distribución después de SMOTE:
+
+2024-12-18 12:49:28,637 - INFO - AumentaSaldo
+0    1056
+1    1056
+Name: count, dtype: int64
+2024-12-18 12:49:28,638 - INFO - # 15. XGBoost import XGBClassifier:
+
+2024-12-18 12:49:28,638 - DEBUG - n_estimators=500: Número de árboles en el modelo.
+2024-12-18 12:49:28,638 - DEBUG - random_state=42: Fija la semilla para reproducibilidad.
+2024-12-18 12:49:28,638 - DEBUG - max_depth=3:  Profundidad máxima de cada árbol.
+2024-12-18 12:49:28,638 - DEBUG - eval_metric=logloss: Métrica de pérdida logarítmica usada internamente durante el entrenamiento.
+2024-12-18 12:49:28,769 - INFO - # 16. Predicciones en el conjunto de prueba
+
+2024-12-18 12:49:28,773 - INFO - # 17. Evaluación del modelo
+
+2024-12-18 12:49:28,774 - INFO - Accuracy del modelo: 0.49444444444444446
+2024-12-18 12:49:28,779 - INFO - 
+Classification Report:
+               precision    recall  f1-score   support
+
+           0       0.50      0.52      0.51       452
+           1       0.49      0.46      0.48       448
+
+    accuracy                           0.49       900
+   macro avg       0.49      0.49      0.49       900
+weighted avg       0.49      0.49      0.49       900
+
+2024-12-18 12:49:28,780 - INFO - # 18. Aplicando Epoch
+2024-12-18 12:49:28,780 - INFO - #     Definir conjuntos de entrenamiento y validación
+2024-12-18 12:49:28,780 - INFO - # 19. Entrenar el modelo XGBoost Mejores Parametros
+2024-12-18 12:49:29,286 - INFO - # 20. Predicciones
+2024-12-18 12:49:29,298 - INFO - 
+Classification Report 2:
+               precision    recall  f1-score   support
+
+           0       0.53      0.56      0.55       452
+           1       0.53      0.50      0.51       448
+
+    accuracy                           0.53       900
+   macro avg       0.53      0.53      0.53       900
+weighted avg       0.53      0.53      0.53       900
+
+2024-12-18 12:49:29,298 - INFO - # 21. CONCLUSIONES
+2024-12-18 12:49:29,299 - INFO - Luego de ajustar los parametros del XGBClassifier: 
+2024-12-18 12:49:29,299 - INFO - n_estimators=300 
+2024-12-18 12:49:29,299 - INFO - learning_rate=0.01 
+2024-12-18 12:49:29,299 - INFO - max_depth=12 
+2024-12-18 12:49:29,299 - INFO - colsample_bytree=0.8 
+2024-12-18 12:49:29,299 - INFO - subsample=0.6 
+2024-12-18 12:49:29,299 - INFO - random_state=42 
+2024-12-18 12:49:29,299 - INFO - eval_metric='logloss' 
+2024-12-18 12:49:29,299 - INFO - /n Fue posible mejorar los valores para accuracy, precision y recall!
+2024-12-18 12:49:29,301 - INFO - Fin del Proceso Automatizado.
+2024-12-18 12:49:29,301 - INFO - #-----------------EOF.XGBoots-----------------#
